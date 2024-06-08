@@ -1,2 +1,0 @@
-# radar
-Radar data
