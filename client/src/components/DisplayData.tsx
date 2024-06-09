@@ -1,34 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Animate } from "./Animate";
 
 type Props = {
-  images: string[];
+  data: any;
+  weather: string;
+  processType: string;
 };
 
 export const DisplayData = (props: Props) => {
-  const { images } = props;
-  const [currentImage, setCurrentImage] = useState(
-    "https://stock.adobe.com/ca/images/red-heart-icons-set-vector/314564554",
-  );
+  const { data, processType, weather } = props;
+  // const [currentImage, setCurrentImage] = useState(
+  //   "https://stock.adobe.com/ca/images/red-heart-icons-set-vector/314564554",
+  // );
+  let currentDB = useRef(data.cappi.rainLinks);
 
-  useEffect(() => {
-    let currentImageIndex = 0;
-    let timer = setInterval(() => {
-      if (currentImageIndex === images.length) {
-        currentImageIndex = 0;
-      }
-      setCurrentImage(images[currentImageIndex + 1]);
-      currentImageIndex += 1;
-    }, 200);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [images]);
-  console.log(images, "from display");
+  if (weather === "rain" && processType === "cappi") {
+    currentDB.current = data.cappi.rainLinks;
+  }
+  if (weather === "rain" && processType === "dpqpe") {
+    currentDB.current = data.dpqpe.rainLinks;
+  }
+  if (weather === "snow" && processType === "cappi") {
+    currentDB.current = data.cappi.snowLinks;
+  }
+  if (weather === "snow" && processType === "dpqpe") {
+    currentDB.current = data.dpqpe.snowLinks;
+  }
+
   return (
     <div>
-      <img
-        src={"https://dd.meteo.gc.ca/radar/CAPPI/GIF/CASKR/" + currentImage}
-      />
+      <Animate images={currentDB.current} processType={processType} />
     </div>
   );
 };

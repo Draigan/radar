@@ -25,6 +25,7 @@ async function fetchGifLinks(url) {
     // Find all the links to GIF files
     $("a").each((index, element) => {
       const href = $(element).attr("href");
+
       // Put all the links into gifLinks
       if (href && href.endsWith(".gif")) {
         gifLinks.push(href);
