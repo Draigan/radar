@@ -10,12 +10,13 @@ export const Animate = (props: Props) => {
   const [isRunning, setIsRunning] = useState<boolean>(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [intervalSpeed, setIntervalSpeed] = useState(6);
 
   useEffect(() => {
     if (isRunning) {
       intervalRef.current = setInterval(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-      }, 300); // Adjust interval time as needed
+      }, intervalSpeed * 100);
     }
 
     return () => {
@@ -23,7 +24,7 @@ export const Animate = (props: Props) => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning]);
+  }, [isRunning, intervalSpeed]);
 
   const handlePause = () => {
     setIsRunning(false);
@@ -34,6 +35,10 @@ export const Animate = (props: Props) => {
   const handleResume = () => {
     setIsRunning(true);
   };
+
+  function handleSpeedChange(event: React.ChangeEvent<HTMLElement>) {
+    setIntervalSpeed(Number(event.target.value));
+  }
 
   function handleSliderChange(event: React.ChangeEvent<HTMLElement>) {
     setCurrentImageIndex(Number(event.target.value));
@@ -49,20 +54,16 @@ export const Animate = (props: Props) => {
         }}
       >
         <input
-          style={{ width: "20%" }}
+          style={{ width: "20%", transform: "scaleX(-1)" }}
           type="range"
-          max={images.length - 1}
+          max={10}
           step={1}
-          min={0}
-          onMouseDown={() => handlePause()}
-          onMouseUp={() => handleResume()}
-          onTouchStart={() => handlePause()}
-          onTouchEnd={() => handleResume()}
-          value={currentImageIndex}
-          onChange={handleSliderChange}
+          min={1}
           className="slider"
+          value={intervalSpeed}
+          onChange={handleSpeedChange}
         />
-
+        &nbsp;&nbsp; {11 - intervalSpeed}x
         <div style={{ marginLeft: "auto" }}>
           {currentImageIndex} of {images.length}
         </div>
@@ -75,7 +76,7 @@ export const Animate = (props: Props) => {
         alt="Slideshow"
       />
       <input
-        style={{ width: "75%" }}
+        style={{ width: "80%" }}
         type="range"
         max={images.length - 1}
         step={1}
