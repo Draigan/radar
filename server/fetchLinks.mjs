@@ -74,6 +74,7 @@ export default async function linkData() {
     "https://dd.meteo.gc.ca/radar/DPQPE/GIF/CASKR/",
   );
   return {
+    date: Date(),
     dpqpe: dpqpe,
     cappi: cappi,
   };

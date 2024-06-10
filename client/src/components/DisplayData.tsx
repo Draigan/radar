@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Animate } from "./Animate";
 
 type Props = {
@@ -9,9 +9,6 @@ type Props = {
 
 export const DisplayData = (props: Props) => {
   const { data, processType, weather } = props;
-  // const [currentImage, setCurrentImage] = useState(
-  //   "https://stock.adobe.com/ca/images/red-heart-icons-set-vector/314564554",
-  // );
   let currentDB = useRef(data.cappi.rainLinks);
 
   if (weather === "rain" && processType === "cappi") {

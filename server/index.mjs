@@ -9,17 +9,45 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+let gifLinks = {};
 
-async function setGetLinks() {
-  const gifLinks = await linkData();
+async function fetchAndSetGifLinks() {
+  gifLinks = await linkData();
 
-  app.get("/", cors(corsOptions), (req, res) => {
-    res.json(gifLinks);
-  });
+  console.log(Date());
+  console.log("Cappi");
+  console.log(
+    gifLinks.cappi.rainLinks.length,
+    " First Rain Link: ",
+    gifLinks.cappi.rainLinks[0],
+  );
+  console.log(
+    gifLinks.cappi.snowLinks.length,
+    " First Snow Link:",
+    gifLinks.cappi.snowLinks[0],
+  );
+  console.log("Dpqpe");
+  console.log(
+    gifLinks.dpqpe.rainLinks.length,
+    " First Rain Link: ",
+    gifLinks.dpqpe.rainLinks[0],
+  );
+  console.log(
+    gifLinks.dpqpe.snowLinks.length,
+    " First Snow Link: ",
+    gifLinks.dpqpe.snowLinks[0],
+  );
 }
 
-setGetLinks();
-setInterval(() => setGetLinks(), 100000);
+app.use(cors(corsOptions));
+
+app.get("/", (req, res) => {
+  res.json(gifLinks);
+  console.log("Received request for links");
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+  fetchAndSetGifLinks();
+  setInterval(fetchAndSetGifLinks, 30000);
+});
