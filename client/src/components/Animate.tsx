@@ -9,7 +9,7 @@ export const Animate = (props: Props) => {
   const { images, processType } = props;
   const [isRunning, setIsRunning] = useState<boolean>(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<number | null>(null);
   const [intervalSpeed, setIntervalSpeed] = useState(6);
 
   useEffect(() => {
@@ -36,11 +36,11 @@ export const Animate = (props: Props) => {
     setIsRunning(true);
   };
 
-  function handleSpeedChange(event: React.ChangeEvent<HTMLElement>) {
+  function handleSpeedChange(event: React.ChangeEvent<HTMLInputElement>) {
     setIntervalSpeed(Number(event.target.value));
   }
 
-  function handleSliderChange(event: React.ChangeEvent<HTMLElement>) {
+  function handleSliderChange(event: React.ChangeEvent<HTMLInputElement>) {
     setCurrentImageIndex(Number(event.target.value));
   }
 
@@ -65,7 +65,7 @@ export const Animate = (props: Props) => {
         />
         &nbsp;&nbsp; {11 - intervalSpeed}x
         <div style={{ marginLeft: "auto" }}>
-          {currentImageIndex} of {images.length}
+          {currentImageIndex + 1} of {images.length}
         </div>
       </div>
       <img

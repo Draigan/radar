@@ -6,21 +6,20 @@ function App() {
   const [data, setData] = useState();
   const [weather, setWeather] = useState("snow");
   const [processType, setProcessType] = useState("cappi");
-  const [fetchTrigger, setFetchTrigger] = useState(false);
 
-  useEffect(() => {
-    fetch("http://localhost:3000")
+  function fetchData() {
+    fetch("https://ec2.draigan.com/radar")
       .then((res) => res.json())
       .then((res) => {
         setData(res);
         console.log("date: ", res.date);
         console.log("cappi length: ", res.cappi.snowLinks.length);
       });
-    console.log("Using Memo");
-  }, [weather, processType, fetchTrigger]);
+  }
 
   useEffect(() => {
-    const timer = setInterval(() => setFetchTrigger((prev) => !prev), 1000);
+    fetchData();
+    const timer = setInterval(() => fetchData(), 10000);
 
     return clearInterval(timer);
   }, []);
